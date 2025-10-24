@@ -1,0 +1,118 @@
+## 🛠️ Core Components
+
+### 1. Mapping Engine (`src/services/mapping-engine.ts`)
+- AI-powered semantic analysis for accurate term matching
+- Context-aware concept alignment
+- Confidence scoring with detailed reasoning
+- Historical mapping pattern learning
+- Alternative suggestions generation
+
+### 2. Data Persistence (`src/integrations/supabase/data-service.ts`)
+- FHIR-compliant data storage
+- Efficient querying and caching
+- Real-time synchronization
+- Audit trail management
+
+### 3. Analytics Dashboard (`src/pages/Analytics.tsx`, `Dashboard.tsx`)
+- Real-time mapping statistics visualization
+- System distribution charts
+- Confidence tracking over time
+- User performance metrics
+- Interactive data exploration
+
+### 4. Authentication System (`src/integrations/supabase/auth.tsx`)
+- Secure user authentication
+- Role-based access control
+- Session management
+- Profile management
+
+## 🎯 Implemented Features
+
+### Mapping Interface
+- Real-time TRADMED to ICD-11 mapping
+- Confidence score display
+- Alternative suggestions
+- FHIR bundle generation
+- Mapping history
+
+### Dashboard
+- Quick statistics overview
+- Recent mapping history
+- System distribution
+- Performance metrics
+- Interactive charts
+
+### Analytics
+- Mapping success rates
+- System-wise breakdown
+- Temporal trends
+- User performance tracking
+- Export capabilities
+
+### Knowledge Base
+- TRADMED concept browsing
+- ICD-11 code exploration
+- Mapping reference database
+- Search and filter capabilities
+
+## 🔒 Security Features
+
+- Secure authentication flow
+- Data encryption at rest
+- HTTPS enforcement
+- Session management
+- Role-based permissions
+
+## 📋 Installation & Setup
+
+1. Clone the repository:
+```bash
+git clone https://github.com/LeenaGeepalem/tradmed-insight-ai.git
+cd tradmed-insight-ai
+```
+
+2. Install dependencies:
+```bash
+bun install   # or npm install
+```
+
+3. Configure environment variables:
+```bash
+cp .env.example .env
+```
+
+Required environment variables:
+```env
+VITE_SUPABASE_URL=your_supabase_url
+VITE_SUPABASE_PUBLISHABLE_KEY=your_supabase_anon_key
+```
+
+4. Start the development server:
+```bash
+bun dev   # or npm run dev
+```
+
+## 🤝 Contributing
+
+We welcome contributions! Please follow these steps:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- Traditional Medicine practitioners for their invaluable insights
+- World Health Organization (WHO) for ICD-11 classification
+- Healthcare informatics community
+- Open-source contributors and maintainers
+
+---
+
+Built with ❤️ for bridging ancient wisdom with modern healthcare

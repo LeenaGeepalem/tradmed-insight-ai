@@ -1,62 +1,45 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/integrations/supabase/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2 } from "lucide-react";
+import { ArrowLeft, Loader2 } from "lucide-react";
 
 const Auth = () => {
-  const [isLogin, setIsLogin] = useState(true);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [fullName, setFullName] = useState("");
+  const [isSignUp, setIsSignUp] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+    fullName: "",
+  });
+
+  const { signIn, signUp } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (session) {
-        navigate("/dashboard");
-      }
-    });
-
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) {
-        navigate("/dashboard");
-      }
-    });
-
-    return () => subscription.unsubscribe();
-  }, [navigate]);
-
-  const handleAuth = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      if (isLogin) {
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
-        if (error) throw error;
-        toast({ title: "Welcome back!", description: "You've successfully logged in." });
-      } else {
-        const { error } = await supabase.auth.signUp({
-          email,
-          password,
-          options: {
-            data: { full_name: fullName },
-            emailRedirectTo: `${window.location.origin}/dashboard`,
-          }
+      if (isSignUp) {
+        await signUp(formData.email, formData.password, formData.fullName);
+        toast({
+          title: "Account created successfully!",
+          description: "Please check your email for verification.",
         });
-        if (error) throw error;
-        toast({ title: "Account created!", description: "Welcome to Ayurveda-Bridge AI." });
+      } else {
+        await signIn(formData.email, formData.password);
+        navigate("/dashboard");
       }
     } catch (error: any) {
       toast({
         variant: "destructive",
-        title: "Authentication Error",
+        title: "Error",
         description: error.message,
       });
     } finally {
@@ -65,7 +48,7 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen flex">
+    <div className="min-h-screen bg-background flex">
       {/* Brand Side */}
       <div className="hidden lg:flex lg:w-1/2 bg-gradient-primary relative overflow-hidden items-center justify-center p-12">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.1),transparent_50%)]" />
@@ -92,41 +75,46 @@ const Auth = () => {
       </div>
 
       {/* Auth Side */}
-      <div className="flex-1 flex items-center justify-center p-8 bg-background">
-        <div className="w-full max-w-md space-y-8">
-          <div className="text-center">
-            <h2 className="text-3xl font-bold gradient-text mb-2">
-              {isLogin ? "Welcome Back" : "Create Account"}
-            </h2>
+      <div className="flex-1 flex items-center justify-center p-8">
+        <Card className="w-full max-w-md p-8">
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold gradient-text mb-2">
+              {isSignUp ? "Create Account" : "Welcome Back"}
+            </h1>
             <p className="text-muted-foreground">
-              {isLogin ? "Sign in to continue your journey" : "Join the future of integrated healthcare"}
+              {isSignUp
+                ? "Sign up to start mapping TRADMED concepts"
+                : "Sign in to continue your work"}
             </p>
           </div>
 
-          <form onSubmit={handleAuth} className="space-y-6">
-            {!isLogin && (
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {isSignUp && (
               <div className="space-y-2">
                 <Label htmlFor="fullName">Full Name</Label>
                 <Input
                   id="fullName"
-                  type="text"
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                  required={!isLogin}
-                  className="glass"
+                  placeholder="Dr. John Doe"
+                  value={formData.fullName}
+                  onChange={(e) =>
+                    setFormData({ ...formData, fullName: e.target.value })
+                  }
+                  required={isSignUp}
                 />
               </div>
             )}
 
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">Email Address</Label>
               <Input
                 id="email"
                 type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                placeholder="practitioner@example.com"
+                value={formData.email}
+                onChange={(e) =>
+                  setFormData({ ...formData, email: e.target.value })
+                }
                 required
-                className="glass"
               />
             </div>
 
@@ -135,34 +123,44 @@ const Auth = () => {
               <Input
                 id="password"
                 type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••"
+                value={formData.password}
+                onChange={(e) =>
+                  setFormData({ ...formData, password: e.target.value })
+                }
                 required
-                className="glass"
               />
             </div>
 
             <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Processing...
-                </>
-              ) : (
-                isLogin ? "Sign In" : "Sign Up"
-              )}
+              {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              {isSignUp ? "Create Account" : "Sign In"}
             </Button>
           </form>
 
-          <div className="text-center">
+          <div className="mt-6 text-center">
             <button
-              onClick={() => setIsLogin(!isLogin)}
-              className="text-primary hover:underline"
+              type="button"
+              onClick={() => setIsSignUp(!isSignUp)}
+              className="text-sm text-muted-foreground hover:text-primary transition-colors"
             >
-              {isLogin ? "Don't have an account? Sign up" : "Already have an account? Sign in"}
+              {isSignUp
+                ? "Already have an account? Sign in"
+                : "Don't have an account? Sign up"}
             </button>
           </div>
-        </div>
+
+          <div className="mt-8 pt-8 border-t border-border">
+            <Button
+              variant="outline"
+              className="w-full"
+              onClick={() => navigate("/")}
+            >
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Back to Home
+            </Button>
+          </div>
+        </Card>
       </div>
     </div>
   );

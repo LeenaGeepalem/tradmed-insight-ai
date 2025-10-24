@@ -14,7 +14,110 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      knowledge_concepts: {
+        Row: {
+          confidence: number | null
+          created_at: string | null
+          description: string | null
+          id: string
+          related_codes: Json | null
+          system: string
+          title: string
+        }
+        Insert: {
+          confidence?: number | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          related_codes?: Json | null
+          system: string
+          title: string
+        }
+        Update: {
+          confidence?: number | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          related_codes?: Json | null
+          system?: string
+          title?: string
+        }
+        Relationships: []
+      }
+      mappings: {
+        Row: {
+          alternatives: Json | null
+          confidence_score: number
+          created_at: string | null
+          icd11_code: string
+          icd11_title: string | null
+          id: string
+          reasoning: string | null
+          tradmed_system: string
+          tradmed_term: string
+          user_id: string | null
+        }
+        Insert: {
+          alternatives?: Json | null
+          confidence_score: number
+          created_at?: string | null
+          icd11_code: string
+          icd11_title?: string | null
+          id?: string
+          reasoning?: string | null
+          tradmed_system: string
+          tradmed_term: string
+          user_id?: string | null
+        }
+        Update: {
+          alternatives?: Json | null
+          confidence_score?: number
+          created_at?: string | null
+          icd11_code?: string
+          icd11_title?: string | null
+          id?: string
+          reasoning?: string | null
+          tradmed_system?: string
+          tradmed_term?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mappings_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string | null
+          email: string
+          full_name: string | null
+          id: string
+          role: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          email: string
+          full_name?: string | null
+          id: string
+          role?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          email?: string
+          full_name?: string | null
+          id?: string
+          role?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

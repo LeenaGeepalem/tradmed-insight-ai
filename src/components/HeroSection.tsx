@@ -43,8 +43,10 @@ export const HeroSection = () => {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
-            <Button size="lg" className="gap-2 text-lg h-14 px-8">
-              Start Mapping <ArrowRight className="w-5 h-5" />
+            <Button size="lg" className="gap-2 text-lg h-14 px-8" asChild>
+              <a href="/auth">
+                Start Mapping <ArrowRight className="w-5 h-5" />
+              </a>
             </Button>
             <Button size="lg" variant="outline" className="gap-2 text-lg h-14 px-8 glass">
               View API Docs

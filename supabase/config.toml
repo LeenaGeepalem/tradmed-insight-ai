@@ -1,1 +1,4 @@
 project_id = "wuetrzittkmayzfwdsqq"
+
+[functions.map-tradmed]
+verify_jwt = false

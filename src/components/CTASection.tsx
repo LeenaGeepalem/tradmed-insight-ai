@@ -22,17 +22,23 @@ export const CTASection = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="gap-2 text-lg h-14 px-8">
-                Get Started Free
-                <ArrowRight className="w-5 h-5" />
+              <Button size="lg" className="gap-2 text-lg h-14 px-8" asChild>
+                <a href="/auth">
+                  Get Started Free
+                  <ArrowRight className="w-5 h-5" />
+                </a>
               </Button>
-              <Button size="lg" variant="outline" className="gap-2 text-lg h-14 px-8 glass">
-                <BookOpen className="w-5 h-5" />
-                Documentation
+              <Button size="lg" variant="outline" className="gap-2 text-lg h-14 px-8 glass" asChild>
+                <a href="/knowledge">
+                  <BookOpen className="w-5 h-5" />
+                  Documentation
+                </a>
               </Button>
-              <Button size="lg" variant="outline" className="gap-2 text-lg h-14 px-8 glass">
-                <Code2 className="w-5 h-5" />
-                API Reference
+              <Button size="lg" variant="outline" className="gap-2 text-lg h-14 px-8 glass" asChild>
+                <a href="/mapping">
+                  <Code2 className="w-5 h-5" />
+                  API Reference
+                </a>
               </Button>
             </div>
           </div>
